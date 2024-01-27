@@ -7,9 +7,9 @@ namespace Orders.Repositories
     {
         private readonly List<Product> products =
         [
-            new Product { Id = Guid.Parse("9d70b801-e27d-4650-b633-60f7930e2fb8"), Name = "Potion", Price = 9, CreatedDate = DateTimeOffset.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Iron Sword", Price = 49, CreatedDate = DateTimeOffset.UtcNow },
-            new Product { Id = Guid.NewGuid(), Name = "Bronze Shield", Price = 44, CreatedDate = DateTimeOffset.UtcNow }
+            new Product { Id = Guid.Parse("9d70b801-e27d-4650-b633-60f7930e2fb8"), Name = "Potion", Price = 9, CreatedDate = DateTimeOffset.UtcNow, Image = [] },
+            new Product { Id = Guid.NewGuid(), Name = "Iron Sword", Price = 49, CreatedDate = DateTimeOffset.UtcNow, Image = [] },
+            new Product { Id = Guid.NewGuid(), Name = "Bronze Shield", Price = 44, CreatedDate = DateTimeOffset.UtcNow, Image = [] }
         ];
 
 
@@ -35,6 +35,11 @@ namespace Orders.Repositories
             }
 
             return orderAlreadyExsits;
+        }
+
+        public List<Order> GetOrders()
+        {
+            return orders;
         }
     }
 }

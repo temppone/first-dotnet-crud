@@ -1,3 +1,4 @@
+using Catalog.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Orders.Entities;
 using Orders.Repositories;
@@ -7,21 +8,23 @@ namespace Orders.Controllers
     [ApiController]
     [Route("orders")]
 
-    public class OrdersController : ControllerBase
+    public class OrdersController(IOrdersRepository repository) : ControllerBase
     {
-        private readonly InMemOrdersRepository ordersRepository;
-
-        public OrdersController()
-        {
-            ordersRepository = new InMemOrdersRepository();
-        }
+        private readonly IOrdersRepository repository = repository;
 
         [HttpGet("{id}")]
         public Order GetItem(Guid id)
         {
-            var item = ordersRepository.GetOrder(id);
+            var order = repository.GetOrder(id);
             
-            return item;
+            return order;
+        }
+
+        public List<Order> GetOrders()
+        {
+            var orders = repository.GetOrders();
+
+            return orders;
         }
     }
 }

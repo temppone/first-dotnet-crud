@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IProductsRepository, InMemProductsRepository>();
 
 var app = builder.Build();
 
@@ -69,9 +70,18 @@ app.MapDelete("/products/{id}", (Guid id) =>
 app.MapGet("/order/{id}", (Guid id) => 
 {
     var orderRepository = new InMemOrdersRepository();
-    var items = orderRepository.GetOrder(id);
+    var order = orderRepository.GetOrder(id);
 
-    return items;   
+    return order;   
+});
+
+app.MapGet("/orders", () =>
+{
+    var orderRepository = new InMemOrdersRepository();
+
+    var orders = orderRepository.GetOrders();
+
+    return orders;
 });
 
 

@@ -1,3 +1,5 @@
+using Catalog.Entities;
+
 namespace Orders.Entities
 {
     public record Order

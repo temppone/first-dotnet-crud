@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace Catalog.Entities
 {
     public record Product 
@@ -5,7 +7,10 @@ namespace Catalog.Entities
         public Guid Id { get; init; }
         public required string Name { get; set;}
 
-        public Double Price { get; set; }
+        public required Double Price { get; set; }
+
+        public required byte[] Image { get; set; }
+        public string? Description { get; set; }
 
         public DateTimeOffset CreatedDate { get; init; }
     }

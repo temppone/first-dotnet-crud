@@ -7,14 +7,9 @@ namespace Catalog.Controllers
 {
     [ApiController]
     [Route("products")]
-    public class ItemsController : ControllerBase
+    public class ItemsController(IProductsRepository repository) : ControllerBase
     { 
-        private readonly InMemProductsRepository repository;
-
-        public ItemsController()
-        {
-            repository = new InMemProductsRepository();
-        }
+        private readonly IProductsRepository repository = repository;
 
         [HttpGet]
         public IEnumerable<Product> GetItems()
