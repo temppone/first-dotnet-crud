@@ -6,27 +6,49 @@ using Microsoft.AspNetCore.Mvc;
 namespace Catalog.Controllers
 {
     [ApiController]
-    [Route("items")]
+    [Route("products")]
     public class ItemsController : ControllerBase
     { 
-        private readonly InMemItemsRepository repository;
+        private readonly InMemProductsRepository repository;
 
         public ItemsController()
         {
-            repository = new InMemItemsRepository();
+            repository = new InMemProductsRepository();
         }
+
         [HttpGet]
-        public IEnumerable<Item> GetItems()
+        public IEnumerable<Product> GetItems()
         {
-            var items = repository.GetItems();
+            var items = repository.GetProducts();
             return items;
         }
 
         [HttpGet("{id}")]
-        public Item GetItem(Guid id)
+        public Product GetItem(Guid id)
         {
             var item = repository.GetItem(id);
             return item;
         }
+
+        [HttpPost]
+        public Product CreateItem(Product item)
+        {
+            repository.CreateProduct(item);
+            return item;
+        }
+
+        public void UpdateItem(Guid id, Product item)
+        {
+            var existingItem = repository.GetItem(id);
+
+            var updatedItem = existingItem with 
+            {
+                Name = item.Name,
+                Price = item.Price
+            };
+
+            repository.UpdateItem(updatedItem);
+        }
+
     }
 }

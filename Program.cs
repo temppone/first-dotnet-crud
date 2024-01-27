@@ -1,5 +1,8 @@
 using Catalog.Entities;
 using Catalog.Repositories;
+using Orders.Entities;
+using Orders.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,34 +18,34 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/items", () => 
+app.MapGet("/products", () => 
 {
-    var repository = new InMemItemsRepository();
-    var items = repository.GetItems();
+    var productsRepository = new InMemProductsRepository();
+    var items = productsRepository.GetProducts();
 
     return items;   
 });
 
-app.MapGet("/items/{id}", (Guid id) => 
+app.MapGet("/products/{id}", (Guid id) => 
 {
-    var repository = new InMemItemsRepository();
-    var item = repository.GetItem(id);
+    var productsRepository = new InMemProductsRepository();
+    var item = productsRepository.GetItem(id);
 
     return item;   
 });
 
-app.MapPost("/items", (Item item) => 
+app.MapPost("/products", (Product item) => 
 {
-    var repository = new InMemItemsRepository();
-    repository.CreateItem(item);
+    var productsRepository = new InMemProductsRepository();
+    productsRepository.CreateProduct(item);
 
     return item;   
 });
 
-app.MapPut("/items/{id}", (Guid id, Item item) => 
+app.MapPut("/products/{id}", (Guid id, Product item) => 
 {
-    var repository = new InMemItemsRepository();
-    var existingItem = repository.GetItem(id);
+    var productsRepository = new InMemProductsRepository();
+    var existingItem = productsRepository.GetItem(id);
 
     var updatedItem = existingItem with 
     {
@@ -50,17 +53,26 @@ app.MapPut("/items/{id}", (Guid id, Item item) =>
         Price = item.Price
     };
 
-    repository.UpdateItem(updatedItem);
+    productsRepository.UpdateItem(updatedItem);
 
     return updatedItem;   
 });
 
-app.MapDelete("/items/{id}", (Guid id) => 
+app.MapDelete("/products/{id}", (Guid id) => 
 {
-    var repository = new InMemItemsRepository();
-    repository.DeleteItem(id);
+    var productsRepository = new InMemProductsRepository();
+    productsRepository.DeleteProduct(id);
 
     return Results.NoContent();   
 });
+
+app.MapGet("/order/{id}", (Guid id) => 
+{
+    var orderRepository = new InMemOrdersRepository();
+    var items = orderRepository.GetOrder(id);
+
+    return items;   
+});
+
 
 app.Run();
