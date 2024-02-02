@@ -1,6 +1,7 @@
-namespace Catalog.Entities
+namespace Catalog.Dtos
+
 {
-    public record Product 
+    public record ProductResponseViewModel 
     {
         public Guid Id { get; init; }
         public required string Name { get; set;}
