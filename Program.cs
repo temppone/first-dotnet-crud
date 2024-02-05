@@ -1,17 +1,30 @@
-using Catalog.Dtos;
-using Catalog.Entities;
-using Catalog.Repositories;
 
+
+using Catalog.Repositories;
+using Catalog.Settings;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IProductsRepository, InMemProductsRepository>();
-// builder.Services.AddTransient();
-// builder.Services.AddScoped();
 builder.Services.AddControllers();
 builder.Services.AddMvc();
+
+BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+BsonSerializer.RegisterSerializer(new DateTimeSerializer(BsonType.String));
+
+builder.Services.AddSingleton<IMongoClient>(ServiceProvider => 
+{
+    var settings = builder.Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+    
+    return new MongoClient(settings.ConnectionString);
+});
+
+builder.Services.AddSingleton<IProductsRepository, MongoDBProductsRepository>();
 
 var app = builder.Build();
 
@@ -23,6 +36,6 @@ if(app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-app.UseEndpoints(e => e.MapControllers());
+app.MapControllers(); 
 
 app.Run();
