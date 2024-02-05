@@ -45,7 +45,7 @@ namespace Catalog.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<ProductResponseViewModel> UpdateProduct(Guid id, UpdateProductViewModel productDto)
+        public ActionResult<ProductResponseViewModel> UpdateProduct(Guid id, UpdateProductViewModel productViewModel)
         {
             var existingProduct = repository.GetProduct(id);
 
@@ -56,8 +56,8 @@ namespace Catalog.Controllers
 
             Product updatedProduct = existingProduct with
             {
-                Name = productDto.Name,
-                Price = productDto.Price,
+                Name = productViewModel.Name,
+                Price = productViewModel.Price,
             };
 
             repository.UpdateProduct(updatedProduct);
