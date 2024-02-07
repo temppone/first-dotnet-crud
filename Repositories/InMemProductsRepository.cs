@@ -13,12 +13,12 @@ namespace Catalog.Repositories
             new Product { Id = Guid.NewGuid(), Name = "Bronze Shield", Price = 44, CreatedDate = DateTimeOffset.UtcNow }
         };
 
-        public IEnumerable<Product> GetProducts()
+        public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return products;
+            return await Task.FromResult(products);
         }
 
-        public Product GetProduct(Guid id)
+        public async Task<Product> GetProductAsync(Guid id)
         {                
             var productAlreadyExists = products.Find(product => product.Id == id);
 
@@ -30,19 +30,19 @@ namespace Catalog.Repositories
             return productAlreadyExists;
         }
 
-        public void CreateProduct(Product product)
+        public void CreateProductAsync(Product product)
         {
             products.Add(product);
         }
 
-        public void UpdateProduct(Product product)
+        public void UpdateProductAsync(Product product)
         {
             var index = products.FindIndex(existingProduct => existingProduct.Id == product.Id);
 
             products[index] = product;
         }
 
-        public void DeleteProduct(Guid id)
+        public void DeleteProductAsync(Guid id)
         {
             var index = products.FindIndex(product => product.Id == id);
 

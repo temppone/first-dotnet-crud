@@ -16,33 +16,35 @@ namespace Catalog.Repositories
             IMongoDatabase database = mongoClient.GetDatabase(databaseName);
             collection = database.GetCollection<Product>(collectionName);
         }
-        public void CreateProduct(Product product)
+        public async Task CreateProductAsync(Product product)
         {
-            collection.InsertOne(product);
+            await collection.InsertOneAsync(product);
         }
 
-        public void DeleteProduct(Guid id)
-        {
-            collection.FindOneAndDelete(product => product.Id == id);
-        }
-
-        public Product GetProduct(Guid id)
+        public async Task<Product> DeleteProductAsync(Guid id)
         {
             var filter = filterBuilder.Eq(product => product.Id, id);
 
-            return collection.Find(filter).SingleOrDefault();
+            return await collection.Find(filter).SingleOrDefaultAsync();
         }
 
-        public IEnumerable<Product> GetProducts()
+        public async Task<Product> GetProductAsync(Guid id)
         {
-            return collection.Find(new BsonDocument()).ToList();
+            var filter = filterBuilder.Eq(product => product.Id, id);
+
+            return await collection.Find(filter).SingleOrDefault();
         }
 
-        public void UpdateProduct(Product product)
+        public async Task<IEnumerable<Product>> GetProductsAsync()
+        {
+            return await collection.Find(new BsonDocument()).ToList();
+        }
+
+        public async Task UpdateProductAsync(Product product)
         {
             var filter = filterBuilder.Eq(existingProduct => product.Id, product.Id);
 
-            collection.ReplaceOne(filter, product);
+            await collection.ReplaceOneAsync(filter, product);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Catalog.Controllers
         [HttpGet]
         public IEnumerable<ProductResponseViewModel> GetProducts()
         {
-            var items = repository.GetProducts().Select(product => product.AsDto());
+            var items = repository.GetProductsAsync().Select(product => product.AsDto());
 
             return items;
         }
@@ -23,7 +23,7 @@ namespace Catalog.Controllers
         [HttpGet("{id}")]
         public ActionResult<ProductResponseViewModel> GetProduct(Guid id)
         {
-            var product = repository.GetProduct(id);
+            var product = repository.GetProductAsync(id);
 
             return product.AsDto();
         }
@@ -39,7 +39,7 @@ namespace Catalog.Controllers
                 CreatedDate = DateTimeOffset.UtcNow
             };
 
-            repository.CreateProduct(product);
+            repository.CreateProductAsync(product);
 
             return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product.AsDto());
         }
@@ -47,7 +47,7 @@ namespace Catalog.Controllers
         [HttpPut("{id}")]
         public ActionResult<ProductResponseViewModel> UpdateProduct(Guid id, UpdateProductViewModel productViewModel)
         {
-            var existingProduct = repository.GetProduct(id);
+            var existingProduct = repository.GetProductAsync(id);
 
             if(existingProduct is null)
             {
@@ -60,7 +60,7 @@ namespace Catalog.Controllers
                 Price = productViewModel.Price,
             };
 
-            repository.UpdateProduct(updatedProduct);
+            repository.UpdateProductAsync(updatedProduct);
 
             return NoContent();
         }
@@ -68,14 +68,14 @@ namespace Catalog.Controllers
         [HttpDelete("{id}")]
         public ActionResult DeleteProduct(Guid id)
         {
-            var existingProduct = repository.GetProduct(id);
+            var existingProduct = repository.GetProductAsync(id);
 
             if(existingProduct is null)
             {
                 return NotFound();
             }
 
-            repository.DeleteProduct(id);
+            repository.DeleteProductAsync(id);
 
             return NoContent();
         }

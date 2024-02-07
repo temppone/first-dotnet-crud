@@ -6,12 +6,10 @@ namespace Catalog.Repositories
 {
     public interface IProductsRepository
     {
-        Product GetProduct(Guid id);
-        IEnumerable<Product> GetProducts();
-        void CreateProduct(Product product);
-
-        void UpdateProduct(Product product);
-
-        void DeleteProduct(Guid id);
+        Task<Product> GetProductAsync(Guid id);
+        Task<IEnumerable<Product>> GetProductsAsync();
+        Task CreateProductAsync(Product product);
+        Task UpdateProductAsync(Product product);
+        Task DeleteProductAsync(Guid id);
     }
 }
