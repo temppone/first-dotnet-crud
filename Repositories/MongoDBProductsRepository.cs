@@ -1,4 +1,5 @@
 using Catalog.Entities;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -21,23 +22,16 @@ namespace Catalog.Repositories
             await collection.InsertOneAsync(product);
         }
 
-        public async Task<Product> DeleteProductAsync(Guid id)
+        public async Task<Product> GetProductAsync(Guid id)
         {
             var filter = filterBuilder.Eq(product => product.Id, id);
 
             return await collection.Find(filter).SingleOrDefaultAsync();
         }
 
-        public async Task<Product> GetProductAsync(Guid id)
-        {
-            var filter = filterBuilder.Eq(product => product.Id, id);
-
-            return await collection.Find(filter).SingleOrDefault();
-        }
-
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return await collection.Find(new BsonDocument()).ToList();
+            return await collection.Find(new BsonDocument()).ToListAsync();
         }
 
         public async Task UpdateProductAsync(Product product)
@@ -45,6 +39,13 @@ namespace Catalog.Repositories
             var filter = filterBuilder.Eq(existingProduct => product.Id, product.Id);
 
             await collection.ReplaceOneAsync(filter, product);
+        }
+
+        public async Task DeleteProductAsync(Guid id)
+        {
+            var filter = filterBuilder.Eq(product => product.Id, id);
+
+            await collection.DeleteOneAsync(filter);
         }
     }
 }

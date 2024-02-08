@@ -13,41 +13,47 @@ namespace Catalog.Controllers
         private readonly IProductsRepository repository = repository;
 
         [HttpGet]
-        public IEnumerable<ProductResponseViewModel> GetProducts()
+        public async Task<IEnumerable<ProductResponseViewModel>> GetProductsAsync()
         {
-            var items = repository.GetProductsAsync().Select(product => product.AsDto());
+            var items = (await repository.GetProductsAsync())
+                        .Select(product => product.AsDto());
 
             return items;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ProductResponseViewModel> GetProduct(Guid id)
+        public async Task<ActionResult<ProductResponseViewModel>> GetProductAsync(Guid id)
         {
-            var product = repository.GetProductAsync(id);
+            var product = await repository.GetProductAsync(id);
+
+            if (product is null){
+                return NotFound();
+            }
 
             return product.AsDto();
         }
 
         [HttpPost]
-        public ActionResult<ProductResponseViewModel> CreateProduct(CreateProductViewModel productDto)
+        public async Task<ActionResult<ProductResponseViewModel>>
+        CreateProductAsync(CreateProductViewModel createProductViewModel)
         {
 
             Product product = new(){
                 Id = Guid.NewGuid(),
-                Name = productDto.Name,
-                Price = productDto.Price,
+                Name = createProductViewModel.Name,
+                Price = createProductViewModel.Price,
                 CreatedDate = DateTimeOffset.UtcNow
             };
 
-            repository.CreateProductAsync(product);
+            await repository.CreateProductAsync(product);
 
-            return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product.AsDto());
+            return CreatedAtAction(nameof(GetProductAsync), new { id = product.Id}, product.AsDto());
         }
 
         [HttpPut("{id}")]
-        public ActionResult<ProductResponseViewModel> UpdateProduct(Guid id, UpdateProductViewModel productViewModel)
+        public async Task<ActionResult<ProductResponseViewModel>> UpdateProductAsync(Guid id, UpdateProductViewModel productViewModel)
         {
-            var existingProduct = repository.GetProductAsync(id);
+            var existingProduct = await repository.GetProductAsync(id);
 
             if(existingProduct is null)
             {
@@ -60,22 +66,22 @@ namespace Catalog.Controllers
                 Price = productViewModel.Price,
             };
 
-            repository.UpdateProductAsync(updatedProduct);
+            await repository.UpdateProductAsync(updatedProduct);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteProduct(Guid id)
+        public async Task<ActionResult> DeleteProductAsync(Guid id)
         {
-            var existingProduct = repository.GetProductAsync(id);
+            var existingProduct = await repository.GetProductAsync(id);
 
             if(existingProduct is null)
             {
                 return NotFound();
             }
 
-            repository.DeleteProductAsync(id);
+            await repository.DeleteProductAsync(id);
 
             return NoContent();
         }
