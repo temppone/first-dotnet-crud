@@ -11,7 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddControllers(
+    options => options.SuppressAsyncSuffixInActionNames = false
+);
 builder.Services.AddMvc();
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
@@ -36,6 +38,6 @@ if(app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
-app.MapControllers(); 
+app.MapControllers();
 
 app.Run();

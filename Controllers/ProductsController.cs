@@ -34,8 +34,7 @@ namespace Catalog.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductResponseViewModel>>
-        CreateProductAsync(CreateProductViewModel createProductViewModel)
+        public async Task<ActionResult<ProductResponseViewModel>> CreateProductAsync(CreateProductViewModel createProductViewModel)
         {
 
             Product product = new(){
@@ -47,7 +46,7 @@ namespace Catalog.Controllers
 
             await repository.CreateProductAsync(product);
 
-            return CreatedAtAction(nameof(GetProductAsync), new { id = product.Id}, product.AsDto());
+            return CreatedAtAction(nameof(GetProductAsync), new {id = product.Id}, product.AsDto());
         }
 
         [HttpPut("{id}")]

@@ -9,6 +9,6 @@ namespace Catalog.Dtos
         
         [Required]
         [Range(1, 1000)]
-        public double Price { get; init; }
+        public int Price { get; init; }
     }
 }
