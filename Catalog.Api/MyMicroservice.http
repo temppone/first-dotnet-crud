@@ -1,6 +1,6 @@
-@MyMicroservice_HostAddress = http://localhost:5044
+@Catalog.Api_HostAddress = http://localhost:5044
 
-GET {{MyMicroservice_HostAddress}}/weatherforecast/
+GET {{Catalog.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
