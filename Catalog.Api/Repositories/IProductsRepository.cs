@@ -1,8 +1,8 @@
-using Catalog.Dtos;
-using Catalog.Entities;
+using Catalog.Api.ModelView;
+using Catalog.Api.Entities;
 using Microsoft.AspNetCore.Http.Features;
 
-namespace Catalog.Repositories
+namespace Catalog.Api.Repositories
 {
     public interface IProductsRepository
     {

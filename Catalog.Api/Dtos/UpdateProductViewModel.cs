@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Catalog.Dtos
+namespace Catalog.Api.ModelView
 {
     public record UpdateProductViewModel
     {
@@ -10,5 +10,7 @@ namespace Catalog.Dtos
         [Required]
         [Range(1, 1000)]
         public int Price { get; init; }
+
+        public string? Description { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 using System.Security.Cryptography.X509Certificates;
-using Catalog.Dtos;
-using Catalog.Entities;
-using Catalog.Repositories;
+using Catalog.Api.ModelView;
+using Catalog.Api.Entities;
+using Catalog.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Catalog.Controllers
+namespace Catalog.Api.Controllers
 {
     [ApiController]
     [Route("products")]
@@ -16,7 +16,7 @@ namespace Catalog.Controllers
         public async Task<IEnumerable<ProductResponseViewModel>> GetProductsAsync()
         {
             var items = (await repository.GetProductsAsync())
-                        .Select(product => product.AsDto());
+                        .Select(product => product.AsModelView());
 
             return items;
         }
@@ -30,7 +30,7 @@ namespace Catalog.Controllers
                 return NotFound();
             }
 
-            return product.AsDto();
+            return product.AsModelView();
         }
 
         [HttpPost]
@@ -46,11 +46,14 @@ namespace Catalog.Controllers
 
             await repository.CreateProductAsync(product);
 
-            return CreatedAtAction(nameof(GetProductAsync), new {id = product.Id}, product.AsDto());
+            return CreatedAtAction(nameof(GetProductAsync), new {id = product.Id}, product.AsModelView());
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductResponseViewModel>> UpdateProductAsync(Guid id, UpdateProductViewModel productViewModel)
+        public async Task<ActionResult<ProductResponseViewModel>> UpdateProductAsync(
+            Guid id,
+            UpdateProductViewModel productViewModel
+        )
         {
             var existingProduct = await repository.GetProductAsync(id);
 

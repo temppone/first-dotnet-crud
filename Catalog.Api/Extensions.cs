@@ -1,15 +1,16 @@
-using Catalog.Dtos;
-using Catalog.Entities;
+using Catalog.Api.ModelView;
+using Catalog.Api.Entities;
 
-namespace Catalog
+namespace Catalog.Api
 {
     public static class Extensions{
-        public static ProductResponseViewModel AsDto(this Product product){
+        public static ProductResponseViewModel AsModelView(this Product product){
             return new ProductResponseViewModel
             {
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
+                Description = product.Description,
                 CreatedDate = product.CreatedDate,
             };
         }

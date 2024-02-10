@@ -1,4 +1,4 @@
-using Catalog.Entities;
+using Catalog.Api.Entities;
 
 namespace Orders.Entities
 {

@@ -1,9 +1,9 @@
-using Catalog.Entities;
+using Catalog.Api.Entities;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Catalog.Repositories
+namespace Catalog.Api.Repositories
 {
     public class MongoDBProductsRepository : IProductsRepository
     {
